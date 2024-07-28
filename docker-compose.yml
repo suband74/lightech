@@ -1,0 +1,37 @@
+services:
+  db:
+    container_name: lightech-db
+    image: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+
+  backend:
+    container_name: lightech-backend
+    build: .
+    entrypoint:
+      - /bin/bash
+      - -c
+      - |
+        python app/manage.py migrate
+        python app/manage.py runserver backend:8000
+    environment:
+      - DEBUG=True
+      - ALLOWED_HOSTS=*
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/postgres
+      - POSTGRES_HOST=db
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - SECRET_KEY='django-insecure-9z&$saf6#q#823*o9u)^rk6v*93ybw!3)v79v^w7&03x6tmo_n'
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
