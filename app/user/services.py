@@ -15,3 +15,6 @@ class UserService:
         payload = jwt_payload_handler(user)
         token = jwt_encode_handler(payload)
         return user, token, created
+    
+    def get_user_by_email(self, email: str) -> User | None:
+        return User.objects.filter(email=email).first()

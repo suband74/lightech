@@ -2,6 +2,7 @@ from rest_framework import permissions, status, views
 from rest_framework.response import Response
 
 from user.services import UserService
+from payment.services import UserBalanceService
 
 
 class RegistrationOrAuthenticationUserView(views.APIView):
@@ -13,6 +14,8 @@ class RegistrationOrAuthenticationUserView(views.APIView):
         user_service = UserService()
         user, token, created = user_service.authorize(email, password)
         if created is True:
+            user_balance_service = UserBalanceService()
+            user_balance_service.create_user_balance(user=user)
             return Response({f'Created {user}': token}, status=status.HTTP_201_CREATED)
         elif created is False:
             return Response({f'Got {user}': token}, status=status.HTTP_200_OK)
