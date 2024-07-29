@@ -39,10 +39,6 @@ class SpendUserBalance(views.APIView):
         balance = user_balance_service.get_latest_user_note_by_user(
             user=user).balance
         if balance >= amount:
-            user_balance_service.spend_user_balance(amount=amount, user = user)
+            user_balance_service.spend_user_balance(amount=amount, user=user)
             return Response({'Success': f'From your balance has been spent {amount}'}, status=status.HTTP_200_OK)
         return Response({'Error': 'You do not have enough money'}, status=status.HTTP_400_BAD_REQUEST)
-
-
-
-token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InN1YmFuZEBtYWlsLnJ1IiwiaWF0IjoxNzIyMTQ3NTYyLCJleHAiOjE3MjMzNTcxNjIsImp0aSI6IjcwNzQ2YWI5LWMzZDYtNDUwMi04YjBmLTM3Y2NlNmQ4ZDE5YiIsInVzZXJfaWQiOjMsIm9yaWdfaWF0IjoxNzIyMTQ3NTYyfQ.M-eFbYKNoOrgUttw85KQ3tCtyh8YxM1FlD-lPcLURZQ'
