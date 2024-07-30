@@ -10,7 +10,7 @@ class IncomeUserBalanceView(views.APIView):
     permission_classes = [permissions.AllowAny | permissions.IsAuthenticated]
 
     @swagger_auto_schema(
-        query_serializer=IncomeUserSerializer,
+        request_body=IncomeUserSerializer,
     )
     def post(self, request):
         request_serializer = IncomeUserSerializer(data=request.data)
@@ -36,7 +36,7 @@ class GetUserBalance(views.APIView):
 
 class SpendUserBalance(views.APIView):
     @swagger_auto_schema(
-        query_serializer=SpendUserSerializer,
+        request_body=SpendUserSerializer,
     )
     def post(self, request):
         user = request.user
