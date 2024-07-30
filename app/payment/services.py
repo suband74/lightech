@@ -1,6 +1,5 @@
 from payment.models import UserBalanceLog
 from user.models import User
-from user.services import UserService
 
 
 class UserBalanceService:
@@ -13,9 +12,7 @@ class UserBalanceService:
     def get_latest_user_note_by_user(self, user: User) -> None:
         return UserBalanceLog.objects.filter(user=user).latest('created_at')
 
-    def income_user_balance(self, amount: int, email: str) -> UserBalanceLog:
-        user_service = UserService()
-        user = user_service.get_user_by_email(email=email)  # точно существует.
+    def income_user_balance(self, amount: int, user: User) -> UserBalanceLog:
         user_balance_log = self.get_latest_user_note_by_user(user=user)
         user_latest_log_balance = user_balance_log.balance
         UserBalanceLog.objects.create(
